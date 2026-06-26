@@ -34,7 +34,7 @@ Level 1 — Core API and Validation
    - Ensure no overlapping bookings for the same hairdresser and time slot
    - Add feature tests covering successful booking and conflicts
 
-Level 2 — Tooling and UX
+### Level 2 — Tooling and UX
 3. Seeder and factories
    - Seed the DB with realistic fake data (multiple hairdressers and bookings)
    - Make it easy to reset and reseed
