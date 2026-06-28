@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Hairdresser;
 use App\Http\Requests\BookingRequest;
-use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -13,7 +13,9 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return view('bookings.index');
+        $hairdressers = Hairdresser::orderBy('name')->get();
+
+        return view('bookings.index', compact('hairdressers'));
     }
 
     /**
@@ -23,12 +25,11 @@ class BookingController extends Controller
     {
         $data = $request->validated();
 
-        $scheduledAt = Carbon::parse($data['date'] . ' ' . $data['hour'] . ':00');
-
         Booking::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'scheduled_at' => $scheduledAt,
+            'hairdresser_id' => $data['hairdresser_id'],
+            'scheduled_at' => $request->scheduledAt(),
         ]);
 
         return redirect()->route('bookings.index')
