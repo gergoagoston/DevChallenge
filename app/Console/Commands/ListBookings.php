@@ -40,7 +40,7 @@ class ListBookings extends Command
 
         $this->table(
             ['Name', 'Date', 'Time', 'Hairdresser ID'],
-            $bookings->map(fn(Booking $booking): array => [
+            $bookings->map(fn (Booking $booking): array => [
                 $booking->name,
                 $booking->scheduled_at->format('Y-m-d'),
                 $booking->scheduled_at->format('H:i'),

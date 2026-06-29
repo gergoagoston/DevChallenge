@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class BookingController extends Controller
 {
-     /**
+    /**
      * Store a new booking from the public API.
      */
     public function store(BookingRequest $request, BookingNotificationService $notifications): JsonResponse

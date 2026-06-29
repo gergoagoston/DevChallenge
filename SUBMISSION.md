@@ -76,8 +76,8 @@ MAIL_FROM_NAME="${APP_NAME}"
 
 I used this to create the files
 
-`artisan make:mail ClientBookingConfirmation`
-`artisan make:mail HairdresserNewBookingNotification`
+`php artisan make:mail ClientBookingConfirmation`
+`php artisan make:mail HairdresserNewBookingNotification`
 
 I implemented the task and I noticed that right now I will have the same code in the Api BookingController and in the
 other BookingController. So this is why i need to look for a solution because i don't want to have code duplication.
@@ -85,3 +85,17 @@ other BookingController. So this is why i need to look for a solution because i 
 To solve this I created a service `BookingNotificationService` and then i call it from both controllers.
 
 i tested manually and i noticed that if the mail service is not available i get an error so i will solve this too.
+
+### 3. Email notifications.
+
+Continuous Integration with Github Actions
+
+The first step was that i check if locally everything works.
+
+I runned the tests with `php artisan test`
+Then i runned the `php vendor/bin/pint --test` to check if there are formatting error.
+i solved the errors using the ` ./vendor/bin/pint.bat` command
+I installed the larastan with this command `composer require --dev larastan/larastan`
+Created the phpstan.neo file-t and setted the level to 5 which is like medium strict.
+Then i used this command `./vendor/bin/phpstan.bat analyse --memory-limit=1G` i had to add the --memory-limit because
+the defaul 128Mb was not enough.

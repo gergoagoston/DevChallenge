@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Mail\ClientBookingConfirmation;
 use App\Mail\HairdresserNewBookingNotification;
 use App\Models\Booking;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class BookingNotificationService

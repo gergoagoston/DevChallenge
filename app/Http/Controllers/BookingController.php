@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookingRequest;
 use App\Models\Booking;
 use App\Models\Hairdresser;
-use App\Http\Requests\BookingRequest;
 use App\Services\BookingNotificationService;
 
 class BookingController extends Controller

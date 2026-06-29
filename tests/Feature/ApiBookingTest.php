@@ -13,12 +13,17 @@ class ApiBookingTest extends TestCase
     use RefreshDatabase;
 
     private const API_ENDPOINT = '/api/bookings';
+
     private const START_TIME = '10:00';
+
     private const SUCCESS_MESSAGE = 'Booking created successfully.';
 
     private const NAME_1 = 'Gergo';
+
     private const EMAIL_1 = 'gergo@gmail.com';
+
     private const NAME_2 = 'Lajos';
+
     private const EMAIL_2 = 'lajos@gmail.com';
 
     public function test_api_booking_can_be_created(): void
@@ -153,6 +158,6 @@ class ApiBookingTest extends TestCase
 
     private function scheduledAt(string $date): string
     {
-        return $date . ' ' . self::START_TIME . ':00';
+        return $date.' '.self::START_TIME.':00';
     }
 }
