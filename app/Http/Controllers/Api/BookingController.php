@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\BookingSlotNotAvailableException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
-use App\Models\Booking;
+use App\Models\Dtos\CreateBookingDto;
 use App\Services\BookingNotificationService;
-use Illuminate\Database\QueryException;
+use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
 
 class BookingController extends Controller
@@ -14,20 +15,18 @@ class BookingController extends Controller
     /**
      * Store a new booking from the public API.
      */
-    public function store(BookingRequest $request, BookingNotificationService $notifications): JsonResponse
-    {
+    public function store(
+        BookingRequest $request,
+        BookingService $bookingService,
+        BookingNotificationService $notifications
+    ): JsonResponse {
         $data = $request->validated();
+        $bookingData = CreateBookingDto::fromArray($data, $request->scheduledAt());
 
         try {
-            $booking = Booking::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'hairdresser_id' => $data['hairdresser_id'],
-                'scheduled_at' => $request->scheduledAt(),
-            ]);
-
+            $booking = $bookingService->create($bookingData);
             $notifications->sendForBooking($booking);
-        } catch (QueryException $exception) {
+        } catch (BookingSlotNotAvailableException $exception) {
             return response()->json([
                 'message' => 'The booking could not be created because this time slot may already be booked for the selected hairdresser.',
                 'errors' => [
