@@ -86,7 +86,7 @@ To solve this I created a service `BookingNotificationService` and then i call i
 
 i tested manually and i noticed that if the mail service is not available i get an error so i will solve this too.
 
-### 3. Email notifications.
+### 4. CI- Github Actions.
 
 Continuous Integration with Github Actions
 
@@ -99,3 +99,27 @@ I installed the larastan with this command `composer require --dev larastan/lara
 Created the phpstan.neo file-t and setted the level to 5 which is like medium strict.
 Then i used this command `./vendor/bin/phpstan.bat analyse --memory-limit=1G` i had to add the --memory-limit because
 the defaul 128Mb was not enough.
+I created the github CI file which will set up the php enviroment in the cloud it will run a database and it will run 3 tests.
+The tests written by me, pint tests and the larastan tests.
+
+### 5. Concurrency-safe bookings
+
+I already added the unique index to the database unique(hairdresserId + scheduled_at) so I will use this solution and not with locks
+When 2 requests will arrive in the same time the database will not let them to create the booking just only one. the second one will fail with
+error code 500. This is why i will need to catch that error and return a 409 conflict error. So I started to see that I will need
+most part of this task.
+Service layer and validation hardening
+Extract booking creation logic into a dedicated service (with a simple DTO)
+Use Form Requests for validation; return consistent error schema
+Add unit/feature tests for the service and validation
+
+So i will create the service and the dto. I will need the transactions because when an inser will fail and if
+there are going to be other operations in the transaction not just the insert it will cause database incosistency.
+
+I will create the dto after that I create the Exception.
+I will create a new BookingService which will add the transaction and the 2 controllers will call this service
+to do the data insertion.
+
+In my solution I rely on the unique constraint to avoid double bookings. I couldn't wirte real paralel, I serached it
+and tried to find a solution. With php tests i couldn't resolve but I found a k6 a command line tool which allows me to run javascript like code
+i installed it and sent 2 request at the same time and i o got 201 and then i got 409. So it works correctly.
